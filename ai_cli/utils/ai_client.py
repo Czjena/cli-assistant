@@ -11,12 +11,12 @@ def ask_llm(prompt: str) -> str:
             {"role": "system", "content": "You are a helpful programming assistant."},
             {"role": "user", "content": prompt}
         ],
-        "max_tokens": 2000,
+        "max_tokens": 5000,
         "temperature": 0.7
     }
 
     try:
-        response = httpx.post(url, json=payload, timeout=120)
+        response = httpx.post(url, json=payload, timeout=800)
         response.raise_for_status()
     except httpx.HTTPStatusError as e:
         raise RuntimeError(f"❌ Błąd HTTP {e.response.status_code}: {e.response.text}")
