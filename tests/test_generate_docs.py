@@ -2,7 +2,8 @@ import os
 from unittest.mock import patch
 from ai_cli.commands.generate_docs import generate_docs
 
-def test_generate_docs_single_file(tmp_path, capsys):
+@patch("ai_cli.commands.generate_docs.ask_llm")
+def test_generate_docs_single_file(mock_llm, tmp_path, capsys):
     # Przygotuj plik .py
     code = 'def add(a, b):\n    return a + b\n'
     file_path = tmp_path / "sample.py"
@@ -12,9 +13,9 @@ def test_generate_docs_single_file(tmp_path, capsys):
 # add function
 Adds two numbers together.
 """
+    mock_llm.return_value = mock_doc
 
-    with patch("ai_cli.commands.generate_docs.ask_llm", return_value=mock_doc) as mock_llm:
-        generate_docs(str(file_path))
+    generate_docs(str(file_path))
 
     # Sprawdź, czy wywołano ask_llm i czy prompt zawiera kod
     called_prompt = mock_llm.call_args[0][0]
@@ -29,4 +30,6 @@ Adds two numbers together.
     # Sprawdź komunikat na stdout
     captured = capsys.readouterr()
     assert "📘 Documentation saved to GENERATED_DOCUMENTATION.md" in captured.out
+
+    # Sprzątanie
     os.remove(doc_file)
