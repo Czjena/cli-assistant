@@ -4,6 +4,7 @@ from ai_cli.commands import generate, explain, review, generate_tests
 import sys
 from ai_cli.commands.choosefile import choose_file
 from ai_cli.commands.createnewfile import create_new_file
+from ai_cli.commands.analyze_repo import analyze_repo
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -55,6 +56,7 @@ def interactive_cli(max_iterations=None):
             "Explain code",
             "Review code",
             "Create unit tests",
+            "Analyze repository",
             "Quit"
         ]
 
@@ -79,6 +81,16 @@ def interactive_cli(max_iterations=None):
             logger.info("Bye!")
             sys.exit(0)
             return
+
+        if choice == "Analyze repository with AI":
+            repo_path = questionary.path("Enter path to repository:").ask()
+            if not repo_path:
+                logger.warning("No path provided.")
+                continue
+            output_path = questionary.text("Optional: path to save report (press enter to skip):").ask()
+            if output_path == "":
+                output_path = None
+            analyze_repo(path=repo_path, output_path=output_path)
 
         if choice == "Choose file":
             logger.debug("Choose file selected")
@@ -106,3 +118,4 @@ def interactive_cli(max_iterations=None):
             review.review(file=selected_file)
         elif choice == "Create unit tests":
             generate_tests.generate_tests(file_path=selected_file)
+

@@ -22,7 +22,7 @@ def generate_tests(file_path: str, with_context: bool = True, output_dir: str = 
         # Dodaj wszystkie inne pliki .py jako kontekst
         for root, dirs, files in os.walk(project_root):
             dirs[:] = [d for d in dirs if
-                       d not in {'.venv', 'venv', '__pycache__', '.git', 'node_modules', 'dist', 'build'}]
+                       d not in {'.venv', 'venv', '__pycache__', '.git', 'node_modules', 'dist', 'build', 'tests'}]
         for root, _, files in os.walk(project_root):
             for name in files:
                 full_path = os.path.join(root, name)

@@ -6,7 +6,7 @@ def ask_llm(prompt: str) -> str:
     url = "http://localhost:1234/v1/chat/completions"
 
     payload = {
-        "model": "lfm2-1.2b",
+        "model": "deepseek-r1-0528-qwen3-8b",
         "messages": [
             {"role": "system", "content": "You are a helpful programming assistant."},
             {"role": "user", "content": prompt}
@@ -16,7 +16,7 @@ def ask_llm(prompt: str) -> str:
     }
 
     try:
-        response = httpx.post(url, json=payload, timeout=800)
+        response = httpx.post(url, json=payload, timeout=9999)
         response.raise_for_status()
     except httpx.HTTPStatusError as e:
         raise RuntimeError(f"❌ Błąd HTTP {e.response.status_code}: {e.response.text}")
