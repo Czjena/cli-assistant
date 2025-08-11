@@ -1,10 +1,17 @@
 from ai_cli.utils.ai_client import ask_llm
 import typer
+from typing import Optional
 
-
-def review(file: str = typer.Argument(..., help="Path to the code file to review")):
+def review(
+    file: str = typer.Argument(..., help="Path to the code file to review"),
+    extra_context: Optional[str] = None
+):
     """
     Perform code review on the given file using AI.
+
+    Parameters:
+        file (str): Path to the code file to review.
+        extra_context (Optional[str]): Additional context to include in the prompt.
     """
     try:
         with open(file, "r", encoding="utf-8") as f:
@@ -19,6 +26,9 @@ def review(file: str = typer.Argument(..., help="Path to the code file to review
         "Point out bugs, code smells, and suggest improvements.\n\n"
         f"{code}"
     )
+
+    if extra_context:
+        prompt += "\n\n### Additional context:\n" + extra_context
 
     print("🔍 Running code review...\n")
     review_result = ask_llm(prompt)
