@@ -1,10 +1,12 @@
 import logging
 import questionary
-from ai_cli.commands import generate, explain, review, generate_tests
+from ai_cli.commands import generate, explain, review, generate_tests, context_adder
 import sys
 from ai_cli.commands.choosefile import choose_file
 from ai_cli.commands.createnewfile import create_new_file
 from ai_cli.commands.analyze_repo import analyze_repo
+from ai_cli.commands.context_adder import ContextAdder
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -20,6 +22,7 @@ def interactive_cli(max_iterations=None):
     global file_path
     selected_file = None
     selected_languages = None
+    context_adder = ContextAdder(base_path='.')  # inicjalizacja ContextAdder
 
     logger.debug("Start interactive_cli")
 
@@ -108,14 +111,38 @@ def interactive_cli(max_iterations=None):
 
         logger.debug(f"Processing choice '{choice}' with file '{selected_file}'")
 
+        # Tutaj pytamy, czy dołączyć kontekst
+        with_context = questionary.confirm("Do you want to include related context from other files?").ask()
+
+        # Teraz w zależności od wyboru dodajemy kontekst do promptu lub nie
         if choice == "Generate code":
             prompt = questionary.text("Enter prompt:").ask()
             logger.debug(f"Prompt entered: {prompt}")
+            if with_context:
+                prompt = context_adder.add_context(selected_file, prompt)
             generate.generate(file=selected_file, prompt=prompt, languages=selected_languages)
-        elif choice == "Explain code":
-            explain.explain(file=selected_file)
-        elif choice == "Review code":
-            review.review(file=selected_file)
-        elif choice == "Create unit tests":
-            generate_tests.generate_tests(file_path=selected_file)
 
+        elif choice == "Explain code":
+            # Explain zwykle nie ma promptu, ale możemy dodać kontekst do pliku
+            if with_context:
+                # Możemy np. odczytać plik z kontekstem i przekazać jako argument (jeśli explain to wspiera)
+                # Jeśli nie, to zostawiamy jak jest albo rozbudowujemy explain.
+                # Dla przykładu:
+                prompt = context_adder.add_context(selected_file, "")
+                explain.explain(file=selected_file, extra_context=prompt)
+            else:
+                explain.explain(file=selected_file)
+
+        elif choice == "Review code":
+            if with_context:
+                prompt = context_adder.add_context(selected_file, "")
+                review.review(file=selected_file, extra_context=prompt)
+            else:
+                review.review(file=selected_file)
+
+        elif choice == "Create unit tests":
+            if with_context:
+                prompt = context_adder.add_context(selected_file, "")
+                generate_tests.generate_tests(file_path=selected_file, extra_context=prompt)
+            else:
+                generate_tests.generate_tests(file_path=selected_file)

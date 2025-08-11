@@ -6,8 +6,15 @@ from ai_cli.utils.language_utils import detect_language
 def generate(
     file: str = typer.Argument(..., help="File name to save the generated code"),
     prompt: str = typer.Argument(..., help="Description of the code to generate"),
-    languages: str = typer.Option(None, help="Comma-separated list of languages to include in context, e.g. 'python,javascript'")
+    languages: str = typer.Option(None, help="Comma-separated list of languages to include in context, e.g. 'python,javascript'"),
+    extra_context: str = None
 ):
+    full_prompt = prompt
+    if extra_context:
+        full_prompt += "\n\n### Additional context:\n" + extra_context
+
+
+    print(f"Prompt wysłany do AI:\n{full_prompt}")
     """
     Generate a code file based on the provided prompt, optionally sending the project context.
     """
