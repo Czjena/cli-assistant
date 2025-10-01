@@ -7,23 +7,23 @@ from ai_cli.utils.report_utils import save_report_to_file
 
 def analyze_repo(path: str, output_path: str = None):
     language = detect_language(path)
-    print(f"🔍 Analiza repozytorium w języku: {language}")
+    print(f"Analiza repozytorium w języku: {language}")
 
     files = get_files_by_language(path, language)
 
     if not files:
-        print("⚠️  Nie znaleziono żadnych plików do analizy.")
+        print("Nie znaleziono żadnych plików do analizy.")
         return
 
     report = []
 
     for file_path in files:
-        print(f"📄 Analiza pliku: {file_path}")
+        print(f"Analiza pliku: {file_path}")
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 code = f.read()
         except Exception as e:
-            print(f"❌ Błąd przy odczycie {file_path}: {e}")
+            print(f"Błąd przy odczycie {file_path}: {e}")
             continue
 
         prompt = build_prompt(code, language)
@@ -34,13 +34,13 @@ def analyze_repo(path: str, output_path: str = None):
             "analysis": analysis.strip()
         })
 
-    print("\n=== 📊 Raport ===\n")
+    print("\n===  Raport ===\n")
     for item in report:
-        print(f"📁 {item['file']}\n{item['analysis']}\n{'-' * 40}")
+        print(f" {item['file']}\n{item['analysis']}\n{'-' * 40}")
 
     if output_path:
         save_report_to_file(report, output_path)
-        print(f"\n💾 Raport zapisany do: {output_path}")
+        print(f"\n Raport zapisany do: {output_path}")
 
 
 def build_prompt(code, language):

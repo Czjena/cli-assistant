@@ -15,6 +15,6 @@ def create_new_file(file_path: str, content: str = ""):
             os.makedirs(dir_name, exist_ok=True)
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(content)
-        print(f"✅ File created: {file_path}")
+        print(f" File created: {file_path}")
     except Exception as e:
-        print(f"❌ Error creating file {file_path}: {e}")
+        print(f" Error creating file {file_path}: {e}")

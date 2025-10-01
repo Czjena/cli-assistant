@@ -19,7 +19,7 @@ def generate(
     Generate a code file based on the provided prompt, optionally sending the project context.
     """
 
-    include_context = typer.confirm("📦 Do you want to include the project context?", default=True)
+    include_context = typer.confirm(" Do you want to include the project context?", default=True)
 
     allowed_langs = None
     if languages:
@@ -40,7 +40,7 @@ def generate(
                             context += f"\n\n# File: {relative_path}\n"
                             context += f.read()
                     except Exception as e:
-                        print(f"⚠️ Could not read {filename}: {e}")
+                        print(f"⚠ Could not read {filename}: {e}")
 
     full_prompt = (
         "You are a senior developer assistant.\n"
@@ -53,4 +53,4 @@ def generate(
 
     with open(file, "w", encoding="utf-8") as f:
         f.write(code)
-    print(f"✅ Code saved to {file}")
+    print(f" Code saved to {file}")

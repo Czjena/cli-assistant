@@ -17,7 +17,7 @@ def review(
         with open(file, "r", encoding="utf-8") as f:
             code = f.read()
     except FileNotFoundError:
-        print(f"❌ File '{file}' not found.")
+        print(f" File '{file}' not found.")
         return
 
     prompt = (
@@ -30,7 +30,7 @@ def review(
     if extra_context:
         prompt += "\n\n### Additional context:\n" + extra_context
 
-    print("🔍 Running code review...\n")
+    print(" Running code review...\n")
     review_result = ask_llm(prompt)
-    print("\n📝 Code review result:\n")
+    print("\n Code review result:\n")
     print(review_result)

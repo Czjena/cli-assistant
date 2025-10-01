@@ -38,5 +38,5 @@ def analyze():
 
     response = ask_llm(prompt)
 
-    print("\n📋 AI Feedback:\n")
+    print("\nAI Feedback:\n")
     print(response)

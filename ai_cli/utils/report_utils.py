@@ -9,4 +9,4 @@ def save_report_to_file(report, path):
             for item in report:
                 f.write(f"# {item['file']}\n\n{item['analysis']}\n\n---\n")
     else:
-        print("⚠️  Nieobsługiwany format raportu. Obsługiwane: .json, .md, .txt")
+        print("  Nieobsługiwany format raportu. Obsługiwane: .json, .md, .txt")

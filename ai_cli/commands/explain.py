@@ -18,7 +18,7 @@ def explain(file: str, extra_context: Optional[str] = None) -> Optional[None]:
         with open(file, "r", encoding="utf-8") as f:
             code = f.read()
     except FileNotFoundError:
-        print(f"❌ File {file} does not exist.")
+        print(f" File {file} does not exist.")
         return None
 
     prompt = (
@@ -30,5 +30,5 @@ def explain(file: str, extra_context: Optional[str] = None) -> Optional[None]:
         prompt += "\n\n### Additional context:\n" + extra_context
 
     explanation = ask_llm(prompt)
-    print("\n🧠 Code explanation:\n")
+    print("\n Code explanation:\n")
     print(explanation)

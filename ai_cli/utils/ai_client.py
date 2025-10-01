@@ -19,8 +19,8 @@ def ask_llm(prompt: str) -> str:
         response = httpx.post(url, json=payload, timeout=9999)
         response.raise_for_status()
     except httpx.HTTPStatusError as e:
-        raise RuntimeError(f"❌ Błąd HTTP {e.response.status_code}: {e.response.text}")
+        raise RuntimeError(f" Błąd HTTP {e.response.status_code}: {e.response.text}")
     except httpx.RequestError as e:
-        raise RuntimeError(f"❌ Błąd połączenia: {e}")
+        raise RuntimeError(f" Błąd połączenia: {e}")
 
     return response.json()["choices"][0]["message"]["content"].strip()

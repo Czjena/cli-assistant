@@ -22,7 +22,7 @@ def generate_docs(
                             code += f"\n\n# File: {relative_path}\n"
                             code += f.read()
                     except Exception as e:
-                        print(f"⚠️ Could not read {filename}: {e}")
+                        print(f"⚠ Could not read {filename}: {e}")
     else:
         with open(path, "r", encoding="utf-8") as f:
             code = f.read()
@@ -40,4 +40,4 @@ def generate_docs(
     with open(doc_path, "w", encoding="utf-8") as f:
         f.write(documentation)
 
-    print(f"📘 Documentation saved to {doc_path}")
+    print(f" Documentation saved to {doc_path}")

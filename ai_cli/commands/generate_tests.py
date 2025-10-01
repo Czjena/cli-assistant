@@ -14,7 +14,7 @@ def generate_tests(
         with open(file_path, "r", encoding="utf-8") as f:
             code = f.read()
     except FileNotFoundError:
-        print(f"❌ File {file_path} not found.")
+        print(f" File {file_path} not found.")
         return
 
     include_context = typer.confirm(
@@ -48,6 +48,6 @@ def generate_tests(
     try:
         with open(test_file_path, "w", encoding="utf-8") as f:
             f.write(tests)
-        print(f"✅ Tests saved to {test_file_path}")
+        print(f" Tests saved to {test_file_path}")
     except Exception as e:
-        print(f"❌ Error saving generated tests: {e}")
+        print(f" Error saving generated tests: {e}")
